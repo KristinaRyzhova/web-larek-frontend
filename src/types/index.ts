@@ -1,7 +1,7 @@
 export type IPayment = 'Онлайн' | 'При получении';
 export type ICategoryItem = 'софт-скил' | 'хард-скил' | 'кнопка' | 'другое' | 'дополнительное';
 
-export interface IProduct {
+export interface IProductCard {
     id: string;
     title: string;
     description?: string;
@@ -11,13 +11,14 @@ export interface IProduct {
 }
 
 export interface ICatalogItems {
-    items: IProduct[];
-    setItems(items: IProduct[]): void;
+    items: IProductCard[];
+    setItems(items: IProductCard[]): void;
     getProduct(id: string): void;
 }
 
 export interface IBasket {
-    items: IProduct[] | null;
+    counter: number;
+    items: IProductCard[] | null;
     total: number | null;
     add(id: string): void;
     remove(id: string): void;
@@ -28,26 +29,50 @@ export interface IOrderForm {
     address?: string;
     email?: string;
     phone?: string;
-    items?: IProduct[] | null;
+    items?: IProductCard[] | null;
     total?: number | null;
 }
 
 export interface IOrder extends IOrderForm {
-	items: IProduct[] | null;
+	items: IProductCard[] | null;
 }
 
-export interface IPaymentForm {
+export interface IModal {
+    payment?: IPayment;
+    address?: string;
+    email?: string;
+    phone?: string;
+    items?: IProductCard[] | null;
+    total?: number | null;
+    open(): void;
+    close(): void;
+    handleEscClose(): void;
+}
+
+export interface IPaymentForm extends IModal {
     payment: IPayment; 
     address: string;
+    open(): void;
+    close(): void;
+    handleEscClose(): void;
 }
 
-export interface IContactsForm { 
+export interface IContactsForm extends IModal { 
     email: string;
     phone: string;
+    open(): void;
+    close(): void;
+    handleEscClose(): void;
 }
 
-export interface ISuccessForm {
+export interface ISuccessForm extends IModal {
     total: number;
+    open(): void;
+    close(): void;
+    handleEscClose(): void;
 }
 
-export type FormErrors = Partial<Record<keyof IOrderForm, string>>;
+export interface IFormErrors {
+    validity: boolean;
+    errors: string[];
+}
