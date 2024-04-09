@@ -1,6 +1,3 @@
-export type IPayment = 'Онлайн' | 'При получении';
-export type ICategoryItem = 'софт-скил' | 'хард-скил' | 'кнопка' | 'другое' | 'дополнительное';
-
 export interface IProductCard {
     id: string;
     title: string;
@@ -31,10 +28,6 @@ export interface IOrderForm {
     phone?: string;
     items?: IProductCard[] | null;
     total?: number | null;
-}
-
-export interface IOrder extends IOrderForm {
-	items: IProductCard[] | null;
 }
 
 export interface IModal {
@@ -76,3 +69,6 @@ export interface IFormErrors {
     validity: boolean;
     errors: string[];
 }
+
+export type IPayment = 'Онлайн' | 'При получении';
+export type ICategoryItem = 'софт-скил' | 'хард-скил' | 'кнопка' | 'другое' | 'дополнительное';
