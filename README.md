@@ -137,9 +137,6 @@ ____
 
 ____
 
-
-
-____
 <!-- 
 **Класс ProductCard** служит для отрисовки карточки товара на странице.
 
@@ -179,13 +176,22 @@ ____
 
 **Класс FormErrors** реализует валидацию инпутов форм. -->
 
-____
-
 ## Ключевые интерфейсы и типы данных
 
 ____
 
-**Интервейс IProductCard** - интерфейс содержащий данные карточки товара:
+**Интерфейс IPage** - интерфейс отображения главной страницы приложения.
+
+```text
+export interface IPage {
+    header: HTMLElement;
+    counter: number;
+    catalog: HTMLElement[];
+    locked: boolean;
+}
+```
+
+**Интерфейс IProductCard** - интерфейс содержащий данные карточки товара:
 
 ```text
 export interface IProductCard {
@@ -198,7 +204,7 @@ export interface IProductCard {
 }
 ```
 
-**Интервейс ICatalogItems** - интерфейс каталога карточек товаров:
+**Интерфейс ICatalogItems** - интерфейс каталога карточек товаров:
 
 ```text
 export interface ICatalogItems {
@@ -208,7 +214,7 @@ export interface ICatalogItems {
 }
 ```
 
-**Интервейс IBasket** - интерфейс описывающий данные корзины:
+**Интерфейс IBasket** - интерфейс описывающий данные корзины:
 
 ```text
 export interface IBasket {
@@ -220,7 +226,7 @@ export interface IBasket {
 }
 ```
 
-**Интервейс IOrderForm** - интерфейс содержащий данные заказа:
+**Интерфейс IOrderForm** - интерфейс содержащий данные заказа:
 
 ```text
 export interface IOrderForm {
@@ -233,7 +239,7 @@ export interface IOrderForm {
 }
 ```
 
-**Интервейс** - интерфейс содержащий данные и методы модальных окон:
+**Интерфейс** - интерфейс содержащий данные и методы модальных окон:
 
 ```text
 export interface IModal {
@@ -249,7 +255,7 @@ export interface IModal {
 }
 ```
 
-**Интервейс** - интерфейс содержащий данные и методы модального окна с формой оплаты:
+**Интерфейс** - интерфейс содержащий данные и методы модального окна с формой оплаты:
 
 ```text
 export interface IPaymentForm extends IModal {
@@ -261,7 +267,7 @@ export interface IPaymentForm extends IModal {
 }
 ```
 
-**Интервейс** - интерфейс содержащий данные и методы модального окна с формой контактов пользователя:
+**Интерфейс** - интерфейс содержащий данные и методы модального окна с формой контактов пользователя:
 
 ```text
 export interface IContactsForm extends IModal {
@@ -273,7 +279,7 @@ export interface IContactsForm extends IModal {
 }
 ```
 
-**Интервейс** - интерфейс содержащий данные и методы модального окна при успешном оформлении заказа:
+**Интерфейс** - интерфейс содержащий данные и методы модального окна при успешном оформлении заказа:
 
 ```text
 export interface ISuccessForm extends IModal {
@@ -285,7 +291,7 @@ export interface ISuccessForm extends IModal {
 }
 ```
 
-**Интервейс IFormErrors** - используется для проверки на валидность и для отображения ошибок в форме:
+**Интерфейс IFormErrors** - используется для проверки на валидность и для отображения ошибок в форме:
 
 ```text
 export interface IFormErrors {

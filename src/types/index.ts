@@ -1,3 +1,10 @@
+export interface IPage {
+    header: HTMLElement;
+    counter: number;
+    catalog: HTMLElement[];
+    locked: boolean;
+}
+
 export interface IProductCard {
     id: string;
     title: string;
