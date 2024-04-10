@@ -71,4 +71,9 @@ export interface IFormErrors {
 }
 
 export type IPayment = 'Онлайн' | 'При получении';
-export type ICategoryItem = 'софт-скил' | 'хард-скил' | 'кнопка' | 'другое' | 'дополнительное';
+export type ICategoryItem = 
+    'софт-скил' | 
+    'хард-скил' | 
+    'кнопка' | 
+    'другое' | 
+    'дополнительное';
