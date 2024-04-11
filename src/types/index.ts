@@ -1,40 +1,17 @@
-export interface IPage {
-    header: HTMLElement;
-    counter: number;
-    catalog: HTMLElement[];
-    locked: boolean;
-}
-
-export interface IProductCard {
+export interface ICard {
     id: string;
     title: string;
     description?: string;
     image?: string;
     price: number | null;
-    category?: ICategoryItem;
+    category?: ICategory;
 }
 
-export interface ICatalogItems {
-    items: IProductCard[];
-    setItems(items: IProductCard[]): void;
-    getProduct(id: string): void;
-}
-
-export interface IBasket {
+export interface IPage {
+    wrapper: HTMLElement;
     counter: number;
-    items: IProductCard[] | null;
-    total: number | null;
-    add(id: string): void;
-    remove(id: string): void;
-}
-
-export interface IOrderForm {
-    payment?: IPayment;
-    address?: string;
-    email?: string;
-    phone?: string;
-    items?: IProductCard[] | null;
-    total?: number | null;
+    catalog: HTMLElement[];
+    locked: boolean;
 }
 
 export interface IModal {
@@ -42,43 +19,43 @@ export interface IModal {
     address?: string;
     email?: string;
     phone?: string;
-    items?: IProductCard[] | null;
+    items?: ICard[] | null;
     total?: number | null;
     open(): void;
     close(): void;
     handleEscClose(): void;
 }
 
-export interface IPaymentForm extends IModal {
+export interface IBasket {
+    items: HTMLElement[];
+    total: number;
+    selected: string[];
+    list: HTMLElement;
+    button: HTMLElement;
+}
+
+export interface IOrder  {
     payment: IPayment; 
     address: string;
-    open(): void;
-    close(): void;
-    handleEscClose(): void;
-}
-
-export interface IContactsForm extends IModal { 
     email: string;
     phone: string;
-    open(): void;
-    close(): void;
-    handleEscClose(): void;
 }
 
-export interface ISuccessForm extends IModal {
+export interface ISuccess {
     total: number;
-    open(): void;
-    close(): void;
-    handleEscClose(): void;
+    onClick: () => void;
 }
 
-export interface IFormErrors {
-    validity: boolean;
-    errors: string[];
+export interface IAppState {
+    catalog: ICard[];
+    basket: string[];
+    preview: string | null;
+    order: IOrder | null;
 }
 
+export type FormErrors = Partial<Record<keyof IModal, string>>;
 export type IPayment = 'Онлайн' | 'При получении';
-export type ICategoryItem = 
+export type ICategory = 
     'софт-скил' | 
     'хард-скил' | 
     'кнопка' | 
