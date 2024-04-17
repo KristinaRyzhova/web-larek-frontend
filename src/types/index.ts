@@ -1,10 +1,16 @@
-export interface ICard {
+export interface IProduct {
     id: string;
     title: string;
     description?: string;
     image?: string;
     price: number | null;
-    category?: ICategory;
+    category?: string;
+    button: string;
+    index?: string;
+}
+
+export interface IProductItems {
+	item: IProduct[];
 }
 
 export interface IPage {
@@ -15,11 +21,11 @@ export interface IPage {
 }
 
 export interface IModal {
-    payment?: IPayment;
+    payment?: TPayment;
     address?: string;
     email?: string;
     phone?: string;
-    items?: ICard[] | null;
+    items?: IProduct[] | null;
     total?: number | null;
     open(): void;
     close(): void;
@@ -35,7 +41,7 @@ export interface IBasket {
 }
 
 export interface IOrder  {
-    payment: IPayment; 
+    payment: TPayment; 
     address: string;
     email: string;
     phone: string;
@@ -47,17 +53,11 @@ export interface ISuccess {
 }
 
 export interface IAppState {
-    catalog: ICard[];
-    basket: string[];
-    preview: string | null;
-    order: IOrder | null;
+    catalog: IProduct[];
+    basket?: string[];
+    preview?: string | null;
+    order?: IOrder | null;
 }
 
 export type FormErrors = Partial<Record<keyof IModal, string>>;
-export type IPayment = 'Онлайн' | 'При получении';
-export type ICategory = 
-    'софт-скил' | 
-    'хард-скил' | 
-    'кнопка' | 
-    'другое' | 
-    'дополнительное';
+export type TPayment = 'Онлайн' | 'При получении';
