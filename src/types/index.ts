@@ -9,10 +9,6 @@ export interface IProduct {
     index?: string;
 }
 
-export interface IProductItems {
-	item: IProduct[];
-}
-
 export interface IPage {
     wrapper: HTMLElement;
     counter: number;

@@ -1,16 +1,16 @@
 import { Model } from './base/Model';
-import {IProduct, IOrder, IAppState, FormErrors} from '../types';
+import { IProduct, IOrder, IAppState, FormErrors } from '../types';
 import { IEvents } from './base/events';
 
-export type CatalogChangeEvent = {
+/* export type CatalogChangeEvent = {
 	catalog: IProduct[];
-};
+}; */
 
 export class ProductItem extends Model<IProduct> {
 	id: string;
 	title: string;
-	price: number | null;
 	description: string;
+	price: number | null;
 	category: string;
 	image: string;
 }
@@ -28,7 +28,7 @@ export class AppState extends Model<IAppState> {
 	}
 
 	setCatalog(items: IProduct[]) {
-		this.catalog = items.map((item) => new ProductItem(item, this.events));
+		this.catalog = items.map((item) => new ProductItem (item, this.events));
 		this.emitChanges('items:changed', { catalog: this.catalog });
 	}
 
