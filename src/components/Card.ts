@@ -1,6 +1,6 @@
-import { Component } from "../base/Component";
-import { IProduct } from "../../types";
-import { ensureElement } from "../../utils/utils";
+import { Component } from "./base/Component";
+import { IProduct } from "../types";
+import { ensureElement } from "../utils/utils";
 
 interface IProductActions {
     onClick: (event: MouseEvent) => void;

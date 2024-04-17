@@ -3,10 +3,10 @@ import './scss/styles.scss';
 import { LarekApi } from './components/base/larekApi';
 import { API_URL, CDN_URL } from './utils/constants';
 import { EventEmitter } from './components/base/events';
-import { Page } from './components/common/Page';
+import { Page } from './components/Page';
 import { AppState } from './components/AppData';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { Card } from './components/common/Card';
+import { Card } from './components/Card';
 
 const events = new EventEmitter();
 const api = new LarekApi(CDN_URL, API_URL);
