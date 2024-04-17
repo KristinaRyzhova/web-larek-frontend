@@ -12,7 +12,8 @@ export interface IProduct {
 export interface IPage {
     wrapper: HTMLElement;
     counter: number;
-    catalog: HTMLElement[];
+    catalog: HTMLElement[];    
+    basket: HTMLElement;
     locked: boolean;
 }
 
@@ -25,7 +26,7 @@ export interface IModal {
     total?: number | null;
     open(): void;
     close(): void;
-    handleEscClose(): void;
+    render(): void;
 }
 
 export interface IBasket {

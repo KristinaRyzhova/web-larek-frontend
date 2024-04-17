@@ -82,6 +82,23 @@ ____
 - get - отправляет GET-запрос на сервер.
 - post - отправляет POST-запрос на сервер.
 
+### Класс larekApi
+
+Класс LarekApi - взаимодействуя с сервером, предоставляет данные о товарах в каталоге приложения:
+
+Поле класса: readonly cdn: string;
+
+В конструктор класса LarekApi передается:
+
+- cdn: string - URL для CDN;
+- baseUrl: string - базовый URL для всех запросов;
+- options?: RequestInit = {} - объект с заголовками запросов, опционально.
+
+Методы класса LarekApi:
+
+- getProductItem - получает информацию по конкретному продукту по его id;
+- getProductItems - получает данные всех продуктов;
+
 ### Класс EventEmitter
 
 Класс EventEmitter реализует паттерн «Наблюдатель» и позволяет подписываться на события и уведомлять подписчиков о наступлении события.
@@ -320,16 +337,18 @@ ____
 
 ____
 
-**Интерфейс ICard** - интерфейс содержащий данные карточки товара:
+**Интерфейс IProduct** - интерфейс содержащий данные карточки товара:
 
 ```text
-export interface ICard {
+export interface IProduct {
     id: string;
     title: string;
     description?: string;
     image?: string;
     price: number | null;
-    category?: ICategory;
+    category?: string;
+    button: string;
+    index?: string;
 }
 ```
 
@@ -339,7 +358,8 @@ export interface ICard {
 export interface IPage {
     wrapper: HTMLElement;
     counter: number;
-    catalog: HTMLElement[];
+    catalog: HTMLElement[];    
+    basket: HTMLElement;
     locked: boolean;
 }
 ```
@@ -348,15 +368,15 @@ export interface IPage {
 
 ```text
 export interface IModal {
-    payment?: IPayment;
+    payment?: TPayment;
     address?: string;
     email?: string;
     phone?: string;
-    items?: ICard[] | null;
+    items?: IProduct[] | null;
     total?: number | null;
     open(): void;
     close(): void;
-    handleEscClose(): void;
+    render(): void;
 }
 ```
 
@@ -413,15 +433,4 @@ export type FormErrors = Partial<Record<keyof IModal, string>>;
 
 ```text
 export type IPayment = 'Онлайн' | 'При получении';
-```
-
-**Тип выбранной категории товаров:**
-
-```text
-export type ICategory = 
-    'софт-скил' | 
-    'хард-скил' | 
-    'кнопка' | 
-    'другое' | 
-    'дополнительное';
 ```

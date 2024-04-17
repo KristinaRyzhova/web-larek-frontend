@@ -67,7 +67,7 @@ events.on('preview:changed', (item: ProductItem) => {
 			image: item.image,
 			price: item.price,
 			category: item.category,
-			button: appState.basket.indexOf(item) < 0 ? 'Купить' : 'Удалить из корзины',
+			button: appState.basket.indexOf(item) < 0 ? 'Купить' : 'Уже в корзине',
 		}),
 	});
 });
