@@ -2,10 +2,6 @@ import { Model } from './base/Model';
 import { IProduct, IOrder, IAppState, FormErrors } from '../types';
 import { IEvents } from './base/Events';
 
-/* export type CatalogChangeEvent = {
-	catalog: IProduct[];
-}; */
-
 export class ProductItem extends Model<IProduct> {
 	id: string;
 	title: string;
@@ -36,4 +32,31 @@ export class AppState extends Model<IAppState> {
 		this.preview = item.id;
 		this.emitChanges('preview:changed', item);
 	}
+	
+	addToBasket(item: ProductItem) {
+		this.basket.push(item);
+		this.emitChanges('basket:changed', item);
+		//this.basket = items.map((item) => new ProductItem (item, this.events));
+		//this.emitChanges('basket:changed', { catalog: this.catalog });
+		//return this.basket;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	/* removeFromBasket(item: ProductItem) {
+		this.basket = this.basket.filter((it) => it != item);
+		this.emitChanges('basket:changed');
+	} */
+
+	/* getTotal(): number {
+		return this.basket.reduce((total, IProduct) => total + IProduct.price, 0);
+	} */
 }

@@ -1,3 +1,7 @@
+export interface IProductActions {
+    onClick: (event: MouseEvent) => void;
+}
+
 export interface IProduct {
     id: string;
     title: string;
@@ -12,7 +16,7 @@ export interface IProduct {
 export interface IPage {
     wrapper: HTMLElement;
     counter: number;
-    catalog: HTMLElement[];    
+    catalog: HTMLElement[];
     basket: HTMLElement;
     locked: boolean;
 }
@@ -30,10 +34,10 @@ export interface IModal {
 }
 
 export interface IBasket {
-    items: HTMLElement[];
     total: number;
-    selected: string[];
-    list: HTMLElement;
+    list: HTMLElement[];
+    title: string;
+    price: number;
     button: HTMLElement;
 }
 
@@ -54,6 +58,7 @@ export interface IAppState {
     basket?: string[];
     preview?: string | null;
     order?: IOrder | null;
+    total: string | number;
 }
 
 export type FormErrors = Partial<Record<keyof IModal, string>>;

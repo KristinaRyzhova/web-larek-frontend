@@ -1,10 +1,6 @@
 import { Component } from "./base/Component";
-import { IProduct } from "../types";
+import { IProduct, IProductActions } from "../types";
 import { ensureElement } from "../utils/utils";
-
-interface IProductActions {
-    onClick: (event: MouseEvent) => void;
-}
 
 export class Card extends Component<IProduct> {
     
@@ -88,7 +84,7 @@ export class Card extends Component<IProduct> {
             this._category.classList.add('card__category_additional')
         }
     }
-
+    
 	get category() {
 		return this._category.textContent || '';
 	}
