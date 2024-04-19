@@ -1,8 +1,8 @@
 import './scss/styles.scss';
 
-import { LarekApi } from './components/base/larekApi';
+import { LarekApi } from './components/LarekApi';
 import { API_URL, CDN_URL } from './utils/constants';
-import { EventEmitter } from './components/base/events';
+import { EventEmitter } from './components/base/Events';
 import { Page } from './components/Page';
 import { AppState, ProductItem } from './components/AppData';
 import { cloneTemplate, ensureElement } from './utils/utils';
@@ -81,3 +81,4 @@ events.on('modal:open', () => {
 events.on('modal:close', () => {
     page.locked = false;
 });
+
