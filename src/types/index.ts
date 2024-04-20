@@ -10,7 +10,7 @@ export interface IProduct {
     price: number | null;
     category?: string;
     button: string;
-    index?: string;
+    index?: number;
 }
 
 export interface IPage {
@@ -54,7 +54,7 @@ export interface ISuccess {
 }
 
 export interface IAppState {
-    catalog: IProduct[];
+    list: IProduct[];
     basket?: string[];
     preview?: string | null;
     order?: IOrder | null;
