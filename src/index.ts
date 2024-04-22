@@ -6,7 +6,7 @@ import { EventEmitter } from './components/base/Events';
 import { Page } from './components/Page';
 import { AppState } from './components/AppData';
 import { cloneTemplate, ensureElement } from './utils/utils';
-import { Card } from './components/Card';
+import { Card, BasketCard } from './components/Card';
 import { Modal } from './components/Modal';
 import { Basket } from './components/Basket';
 import { IProduct } from './types';
@@ -51,7 +51,6 @@ api
 	});
 
 events.on('items:changed', () => {
-	page.counter = appState.basket.length;
 	page.catalog = appState.catalog.map((item) => {
 		const card = new Card(cloneTemplate(cardCatalogTemplate), {
 			onClick: () => {
@@ -63,12 +62,8 @@ events.on('items:changed', () => {
 });
 
 events.on('card:select', (item: IProduct) => {
-	appState.setPreview(item);
-});
-
-events.on('preview:changed', (item: IProduct) => {
 	const card = new Card(cloneTemplate(cardPreviewTemplate), {
-		onClick: () => events.emit('card:add', item)
+		onClick: () => events.emit('product:add', item),
 	});
 
 	modal.render({
@@ -90,96 +85,37 @@ events.on('basket:open', () => {
     modal.render({
         content: basket.render()
     })
-	console.log(appState.basket);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* events.on('basket:changed', () => {
-	const items = appState.basket.map((item, index) => {
-		const card = new Card(cloneTemplate(basketItemsTemplate), {
-			onClick: () => events.emit('product:addToBasket', item)
-		});
-		return card.render({
-			index: index + 1,
-			title: item.title,
-			description: item.description,
-			image: item.image,
-			price: item.price,
-			category: item.category,
-		})
-
-	})
-	modal.render({
-		content: basket.render({
-			items,
-		})
-	});
-}); */
-
-
-
-
-	
-
-
-
-
-
-/* events.on('basket:changed', (item: IProduct) => {
-	const card = new Card(cloneTemplate(basketItemsTemplate), {
-		onClick: () => events.emit('product:addToBasket', item)
-	});
-
-	modal.render({
-		content: card.render({
-			title: item.title,
-			price: item.price,
-		})
-	});
 });
 
 // добавлем товар в корзину
-events.on('card:add', (item: IProduct) => {
+events.on('product:add', (item: IProduct) => {
 	appState.addToBasket(item);
 	modal.close();
-}); */
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* // удаляем товар из корзины
-events.on('product:delete', (item: ProductItem) => {
+// удаляем товар из корзины
+events.on('product:remove', (item: IProduct) => {
 	appState.removeFromBasket(item)
-}); */
+});
 
-/* events.on('counter:changed', () => {
-	page.counter = appState.basket.length;
-}); */
+// изменения в корзине
+events.on('basket:changed', () => {
+	page.counter = appState.getBasketItems().length;
+	let total = 0;
+	basket.items = appState.catalog.map((item, index) => {
+		const card = new BasketCard(cloneTemplate(basketItemsTemplate), {
+			onClick: () => {
+				events.emit('product:remove', item),
+				basket.total = appState.getTotal();
+			},
+		});
+		total = total + item.price;
+		return card.render({
+			title: item.title,
+			price: item.price,
+			index: index + 1
+		})
+	});
+	
+	basket.total = total;
+});

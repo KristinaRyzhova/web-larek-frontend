@@ -1,5 +1,5 @@
 import { Component } from "./base/Component";
-import { IProduct, IProductActions } from "../types";
+import { IProduct, IBasketProduct, IProductActions } from "../types";
 import { ensureElement } from "../utils/utils";
 
 export class Card extends Component<IProduct> {
@@ -99,5 +99,39 @@ export class Card extends Component<IProduct> {
     
     get index(): string {
         return this._index.textContent || '';
+    }
+}
+
+export class BasketCard extends Component <IBasketProduct> {
+    protected _index: HTMLElement;
+    protected _title: HTMLElement;
+    protected _button: HTMLButtonElement;
+    protected _price: HTMLElement;
+    
+    constructor (container: HTMLElement, actions?: IProductActions){
+        super(container);
+        this._index = this.container.querySelector('.basket__item-index');
+        this._title = this.container.querySelector('.card__title');
+        this._button = this.container.querySelector('.basket__item-delete');
+        this._price = this.container.querySelector('.card__price');
+
+        if(this._button) {
+            this._button.addEventListener('click', (evt) => {
+                this.container.remove();
+                actions?.onClick(evt);
+            })
+        }
+    }
+
+    set index(value: number) {
+		this.setText(this._index, `${value}`);
+	}
+
+    set title(value: string) {
+        this.setText(this._title, value);  
+    }
+
+    set price(value: number) {   
+        this.setText(this._price, `${value}` + ' синапсов');
     }
 }

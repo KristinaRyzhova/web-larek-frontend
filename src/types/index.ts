@@ -26,19 +26,22 @@ export interface IModal {
     address?: string;
     email?: string;
     phone?: string;
-    items?: IProduct[] | null;
     total?: number | null;
     open(): void;
     close(): void;
     render(): void;
 }
 
-export interface IBasket {
+export interface IBasketView {
+    items: HTMLElement[];
     total: number;
-    list: HTMLElement[];
+  }
+
+export interface IBasketProduct {
+    index: number;
     title: string;
     price: number;
-    button: HTMLElement;
+    button: string;
 }
 
 export interface IOrder  {
@@ -55,7 +58,7 @@ export interface ISuccess {
 
 export interface IAppState {
     list: IProduct[];
-    basket?: string[];
+    basket?: IProduct[];
     preview?: string | null;
     order?: IOrder | null;
     total: string | number;
