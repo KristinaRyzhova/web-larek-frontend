@@ -32,11 +32,6 @@ export interface IModal {
     render(): void;
 }
 
-export interface IBasketView {
-    items: HTMLElement[];
-    total: number;
-  }
-
 export interface IBasketProduct {
     index: number;
     title: string;

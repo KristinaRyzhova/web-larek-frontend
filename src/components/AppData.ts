@@ -38,4 +38,20 @@ export class AppState extends Model<IAppState> {
 	getTotal(): number {
 		return this.basket.reduce((total, item) => total + item.price, 0);
 	}
+
+	validateOrder() {
+		const errors: typeof this.formErrors = {};
+		if (!this.order.address) {
+			errors.phone = 'Необходимо указать адрес';
+		}
+		if (!this.order.email) {
+			errors.email = 'Необходимо указать email';
+		}
+		if (!this.order.phone) {
+			errors.phone = 'Необходимо указать телефон';
+		}
+		this.formErrors = errors;
+		this.events.emit('formErrors:change', this.formErrors);
+		return Object.keys(errors).length === 0;
+	}
 }

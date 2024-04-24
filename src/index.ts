@@ -102,7 +102,7 @@ events.on('product:remove', (item: IProduct) => {
 events.on('basket:changed', () => {
 	page.counter = appState.getBasketItems().length;
 	let total = 0;
-	basket.items = appState.catalog.map((item, index) => {
+	basket.items = appState.basket.map((item, index) => {
 		const card = new BasketCard(cloneTemplate(basketItemsTemplate), {
 			onClick: () => {
 				events.emit('product:remove', item),

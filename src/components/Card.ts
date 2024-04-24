@@ -1,5 +1,5 @@
 import { Component } from "./base/Component";
-import { IProduct, IBasketProduct, IProductActions } from "../types";
+import { IProduct, IProductActions } from "../types";
 import { ensureElement } from "../utils/utils";
 
 export class Card extends Component<IProduct> {
@@ -102,7 +102,7 @@ export class Card extends Component<IProduct> {
     }
 }
 
-export class BasketCard extends Component <IBasketProduct> {
+export class BasketCard extends Component <IProduct> {
     protected _index: HTMLElement;
     protected _title: HTMLElement;
     protected _button: HTMLButtonElement;
@@ -134,4 +134,13 @@ export class BasketCard extends Component <IBasketProduct> {
     set price(value: number) {   
         this.setText(this._price, `${value}` + ' синапсов');
     }
-}
+} 
+
+
+/* toggleButton(selected: boolean) {
+        if(selected) {
+          this.button = 'Уже в корзине';
+        } else {
+          this.button = 'Купить'
+        }
+      }*/
