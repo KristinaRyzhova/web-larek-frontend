@@ -25,6 +25,9 @@ export class Basket extends Component<IBasketView> {
                 events.emit('order:open');
             });
         }
+
+        this.items = [];
+		this._button.disabled = true;
     }
 
     set items(items: HTMLElement[]) {
@@ -39,17 +42,17 @@ export class Basket extends Component<IBasketView> {
         }
     }
     
-    set selected(items: string[]) {
+    set total(total: number) {
+        this.setText(this._total, `${total} синапсов`);
+    }
+
+    /* set selected(items: string[]) {
         if (items.length) {
             this.setDisabled(this._button, false);
         } else {
             this.setDisabled(this._button, true);
         }
-    }
-
-    set total(total: number) {
-        this.setText(this._total, `${total} синапсов`);
-    }
+    } */
 }
 
 
