@@ -7,6 +7,7 @@ import { Page } from './components/Page';
 import { AppState } from './components/AppData';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Card, BasketCard } from './components/Card';
+import { PaymentForm } from './components/PaymentForm';
 import { Modal } from './components/Modal';
 import { Basket } from './components/Basket';
 import { IProduct } from './types';
@@ -24,9 +25,11 @@ const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
 const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const basketItemsTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
+const paymentFormTemplate = ensureElement<HTMLTemplateElement>('#order');
 
 // Переиспользуемые части интерфейса
 const basket = new Basket(cloneTemplate(basketTemplate), events);
+const paymentForm = new PaymentForm(cloneTemplate(paymentFormTemplate), events);
 
 events.onAll(({ eventName, data }) => {
 	console.log(eventName, data);
@@ -119,3 +122,15 @@ events.on('basket:changed', () => {
 	
 	basket.total = total;
 });
+
+events.on('order:open', () => {
+	paymentForm.setButtonClass('');
+	 modal.render({
+		 content: paymentForm.render({
+			 payment: null,
+			 address: '',
+			 valid: false,
+			 errors: [],
+		 }),
+	 });
+ });
