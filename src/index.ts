@@ -10,7 +10,7 @@ import { Card, BasketCard } from './components/Card';
 import { PaymentForm } from './components/PaymentForm';
 import { Modal } from './components/Modal';
 import { Basket } from './components/Basket';
-import { IProduct } from './types';
+import { IContactForm, IOrder, IProduct, TPayment } from './types';
 
 const events = new EventEmitter();
 const api = new LarekApi(CDN_URL, API_URL);
@@ -26,10 +26,12 @@ const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const basketItemsTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
 const paymentFormTemplate = ensureElement<HTMLTemplateElement>('#order');
+const contactFormTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
 // Переиспользуемые части интерфейса
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const paymentForm = new PaymentForm(cloneTemplate(paymentFormTemplate), events);
+const contactForm = new PaymentForm(cloneTemplate(contactFormTemplate), events);
 
 events.onAll(({ eventName, data }) => {
 	console.log(eventName, data);
@@ -123,14 +125,49 @@ events.on('basket:changed', () => {
 	basket.total = total;
 });
 
-events.on('order:open', () => {
+/* events.on('order:open', () => {
 	paymentForm.setButtonClass('');
-	 modal.render({
-		 content: paymentForm.render({
-			 payment: null,
-			 address: '',
-			 valid: false,
-			 errors: [],
-		 }),
-	 });
- });
+	modal.render({
+		content: paymentForm.render({
+			payment: null,
+			address: '',
+			valid: false,
+			errors: [],
+		}),
+	});
+}); */
+
+events.on('order:open', () => {
+	modal.render({
+		content: contactForm.render({
+			phone: '',
+			email: '',
+			valid: false,
+			errors: [],
+		}),
+	});
+});
+
+// Открыть форму заказа
+events.on('contacts:open', () => {
+    modal.render({
+        content: contactForm.render({
+            phone: '',
+            email: '',
+            valid: false,
+            errors: []
+        })
+    });
+});
+
+// Изменилось состояние валидации формы
+events.on('formErrors:change', (errors: Partial<IContactForm>) => {
+    const { email, phone } = errors;
+    contactForm.valid = !email && !phone;
+    contactForm.errors = Object.values({phone, email}).filter(i => !!i).join('; ');
+});
+
+// Изменилось одно из полей
+events.on(/^contacts\..*:change/, (data: { field: keyof IContactForm, value: string }) => {
+    appState.setContactField(data.field, data.value);
+});

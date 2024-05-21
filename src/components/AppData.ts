@@ -1,18 +1,20 @@
 import { Model } from './base/Model';
-import { IProduct, IOrder, IAppState, FormErrors } from '../types';
+import { IProduct, IOrder, IAppState, FormErrors, TPayment, IDeliveryForm, IContactForm } from '../types';
 import { IEvents } from './base/Events';
 
 export class AppState extends Model<IAppState> {
 	catalog: IProduct[] = [];
 	basket: IProduct[] = [];
-	order: IOrder;
+	order: IOrder = {
+		email: '',
+		phone: '',
+		payment: null,
+		address: '',
+		items: [],
+		total: 0
+	}
 	preview: string | null;
 	formErrors: FormErrors = {};
-
-	constructor(data: Partial<IAppState>, protected events: IEvents) {
-		super(data, events);
-		this.basket = [];
-	}
 
 	setCatalog(items: IProduct[]) {
 		items.forEach((item) => (this.catalog = [...this.catalog, item]));
@@ -39,19 +41,23 @@ export class AppState extends Model<IAppState> {
 		return this.basket.reduce((total, item) => total + item.price, 0);
 	}
 
-	validateOrder() {
-		const errors: typeof this.formErrors = {};
-		if (!this.order.address) {
-			errors.phone = 'Необходимо указать адрес';
-		}
-		if (!this.order.email) {
-			errors.email = 'Необходимо указать email';
-		}
-		if (!this.order.phone) {
-			errors.phone = 'Необходимо указать телефон';
-		}
-		this.formErrors = errors;
-		this.events.emit('formErrors:change', this.formErrors);
-		return Object.keys(errors).length === 0;
-	}
+	setContactField(field: keyof IContactForm, value: string) {
+		this.order[field] = value;
+        if (this.validateContactForm()) {
+            this.events.emit('order:ready', this.order);
+        }
+    }
+
+    validateContactForm() {
+        const errors: typeof this.formErrors = {};		
+        if (!this.order.email) {
+            errors.email = 'Необходимо указать email';
+        }
+        if (!this.order.phone) {
+            errors.phone = 'Необходимо указать телефон';
+        }
+        this.formErrors = errors;
+        this.events.emit('formErrors:change', this.formErrors);
+        return Object.keys(errors).length === 0;
+    }
 }

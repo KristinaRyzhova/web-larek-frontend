@@ -10,7 +10,7 @@ export class PaymentForm extends Form<IOrder> {
         super(container, events);
         this._buttons = Array.from (container.querySelectorAll('.button_alt'));
 
-    this._buttons.forEach((element) =>
+        this._buttons.forEach((element) =>
             element.addEventListener('click', (event: MouseEvent) => {
                 const target = event.target as HTMLButtonElement;
                 const name = target.name;
@@ -34,5 +34,4 @@ export class PaymentForm extends Form<IOrder> {
         (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
     }
   
-  }
-    
+}

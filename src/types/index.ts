@@ -39,11 +39,19 @@ export interface IBasketProduct {
     button: string;
 }
 
-export interface IOrder  {
-    payment: TPayment; 
+export interface IDeliveryForm {
     address: string;
+    payment: string;
+}
+
+export interface IContactForm {
     email: string;
     phone: string;
+}
+
+export interface IOrder extends IDeliveryForm, IContactForm {
+    items: string[];
+    total: number;
 }
 
 export interface ISuccess {
