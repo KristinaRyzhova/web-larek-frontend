@@ -54,8 +54,16 @@ export interface IOrder extends IPaymentForm, IContactForm {
     total: number;
 }
 
+export interface IOrderResult {
+    id: string;
+    total: number;
+}
+
 export interface ISuccess {
     total: number;
+}
+
+export interface ISuccessActions {
     onClick: () => void;
 }
 

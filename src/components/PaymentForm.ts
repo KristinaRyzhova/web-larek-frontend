@@ -26,12 +26,15 @@ export class PaymentForm extends Form<IOrder> {
             button.classList.add('button_alt-active')
         } else {
             button.classList.remove('button_alt-active');
-          } 
-      }); 
+          }
+      });
     }
   
-    set email(value: string) {
-        (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
+    set address(value: string) {
+        (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
-  
+
+    clearAddress() {
+        this.address = ''
+    }
 }

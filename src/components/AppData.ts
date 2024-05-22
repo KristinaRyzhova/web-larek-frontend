@@ -1,6 +1,5 @@
 import { Model } from './base/Model';
-import { IProduct, IOrder, IAppState, FormErrors, TPayment, IPaymentForm, IContactForm } from '../types';
-import { IEvents } from './base/Events';
+import { IProduct, IOrder, IAppState, FormErrors, IContactForm } from '../types';
 
 export class AppState extends Model<IAppState> {
 	catalog: IProduct[] = [];
@@ -82,4 +81,10 @@ export class AppState extends Model<IAppState> {
         this.events.emit('formErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;
     }
+
+	setOrder():void {
+		this.order.total = this.getTotal();
+		this.order.items = this.getBasketItems().map((item) => item.id);
+	}
+
 }

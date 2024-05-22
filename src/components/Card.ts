@@ -134,13 +134,12 @@ export class BasketCard extends Component <IProduct> {
     set price(value: number) {   
         this.setText(this._price, `${value}` + ' синапсов');
     }
-} 
 
-
-/* toggleButton(selected: boolean) {
-        if(selected) {
-          this.button = 'Уже в корзине';
+    /* set selected(items: string[]) {
+        if (items.length) {
+            this.setDisabled(this._button, false);
         } else {
-          this.button = 'Купить'
+            this.setDisabled(this._button, true);
         }
-      }*/
+    } */
+}

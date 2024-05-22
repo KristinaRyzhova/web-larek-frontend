@@ -10,7 +10,9 @@ import { Card, BasketCard } from './components/Card';
 import { PaymentForm } from './components/PaymentForm';
 import { Modal } from './components/Modal';
 import { Basket } from './components/Basket';
-import { IContactForm, IOrder, IPaymentForm, IProduct, TPayment } from './types';
+import { Success } from './components/Success';
+import { IContactForm, IPaymentForm, IProduct, TPayment } from './types';
+
 
 const events = new EventEmitter();
 const api = new LarekApi(CDN_URL, API_URL);
@@ -27,6 +29,7 @@ const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const basketItemsTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
 const paymentFormTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactFormTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const successTemplate = ensureElement<HTMLTemplateElement>('#success')
 
 // Переиспользуемые части интерфейса
 const basket = new Basket(cloneTemplate(basketTemplate), events);
@@ -142,10 +145,9 @@ events.on('payment:changed', (data: { target: TPayment }) => {
 	appState.setPaymentMethod(data.target);
 });
 
-// Изменилось одно из полей
-events.on(/^order\..*:change/, (data: { field: keyof IContactForm, value: string }) => {
-    appState.setContactField(data.field, data.value);
-	
+// Изменился адрес доставки
+events.on(/^order\..*:change/, (data: { value: string }) => {
+	appState.setPaymentAddress(data.value);
 });
 
 // Изменилось состояние валидации формы
@@ -178,4 +180,29 @@ events.on('formErrors:change', (errors: Partial<IContactForm>) => {
 events.on(/^contacts\..*:change/, (data: { field: keyof IContactForm, value: string }) => {
     appState.setContactField(data.field, data.value);
 	
+});
+
+events.on('contacts:submit', () => {
+	appState.setOrder();
+	api
+		.orderProduct(appState.order)
+		.then(() => {
+			const success = new Success(cloneTemplate(successTemplate),
+				{
+					onClick: () => {
+						modal.close();
+					},
+				},
+				appState.getTotal()
+			);
+			modal.render({
+				content: success.render({}),
+			});
+			paymentForm.setButtonClass('');
+			paymentForm.clearAddress();
+			//contactForm.clearContactsFields();
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 });
