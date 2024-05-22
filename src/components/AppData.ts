@@ -1,5 +1,5 @@
 import { Model } from './base/Model';
-import { IProduct, IOrder, IAppState, FormErrors, TPayment, IDeliveryForm, IContactForm } from '../types';
+import { IProduct, IOrder, IAppState, FormErrors, TPayment, IPaymentForm, IContactForm } from '../types';
 import { IEvents } from './base/Events';
 
 export class AppState extends Model<IAppState> {
@@ -41,14 +41,36 @@ export class AppState extends Model<IAppState> {
 		return this.basket.reduce((total, item) => total + item.price, 0);
 	}
 
-	setContactField(field: keyof IContactForm, value: string) {
+	setPaymentMethod(value: string): void {
+		this.order.payment = value;
+		this.validatePaymentForm();
+	}
+
+	setPaymentAddress(value: string): void {
+		this.order.address = value;
+		this.validatePaymentForm();
+	}
+
+	validatePaymentForm() {
+		const errors: typeof this.formErrors = {};
+		if (!this.order.address) {
+			errors.address = 'Необходимо указать адрес';
+		}
+		if (!this.order.payment) {
+			errors.payment = 'Необходимо выбрать способ оплаты';
+		}
+		this.formErrors = errors;
+		this.events.emit('formErrors:change', this.formErrors);
+		return Object.keys(errors).length === 0;
+	}
+
+    setContactField(field: keyof IContactForm, value: string) {
 		this.order[field] = value;
         if (this.validateContactForm()) {
-            this.events.emit('order:ready', this.order);
+            this.events.emit('contacts:ready', this.order);
         }
     }
-
-    validateContactForm() {
+	validateContactForm() {
         const errors: typeof this.formErrors = {};		
         if (!this.order.email) {
             errors.email = 'Необходимо указать email';

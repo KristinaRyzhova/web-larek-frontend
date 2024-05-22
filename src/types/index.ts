@@ -39,7 +39,7 @@ export interface IBasketProduct {
     button: string;
 }
 
-export interface IDeliveryForm {
+export interface IPaymentForm {
     address: string;
     payment: string;
 }
@@ -49,7 +49,7 @@ export interface IContactForm {
     phone: string;
 }
 
-export interface IOrder extends IDeliveryForm, IContactForm {
+export interface IOrder extends IPaymentForm, IContactForm {
     items: string[];
     total: number;
 }

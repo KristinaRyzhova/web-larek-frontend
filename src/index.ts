@@ -10,7 +10,7 @@ import { Card, BasketCard } from './components/Card';
 import { PaymentForm } from './components/PaymentForm';
 import { Modal } from './components/Modal';
 import { Basket } from './components/Basket';
-import { IContactForm, IOrder, IProduct, TPayment } from './types';
+import { IContactForm, IOrder, IPaymentForm, IProduct, TPayment } from './types';
 
 const events = new EventEmitter();
 const api = new LarekApi(CDN_URL, API_URL);
@@ -125,31 +125,38 @@ events.on('basket:changed', () => {
 	basket.total = total;
 });
 
-/* events.on('order:open', () => {
+events.on('order:open', () => {
 	paymentForm.setButtonClass('');
 	modal.render({
 		content: paymentForm.render({
-			payment: null,
+			payment: '',
 			address: '',
-			valid: false,
-			errors: [],
-		}),
-	});
-}); */
-
-events.on('order:open', () => {
-	modal.render({
-		content: contactForm.render({
-			phone: '',
-			email: '',
 			valid: false,
 			errors: [],
 		}),
 	});
 });
 
+// выбираем метод оплаты
+events.on('payment:changed', (data: { target: TPayment }) => {
+	appState.setPaymentMethod(data.target);
+});
+
+// Изменилось одно из полей
+events.on(/^order\..*:change/, (data: { field: keyof IContactForm, value: string }) => {
+    appState.setContactField(data.field, data.value);
+	
+});
+
+// Изменилось состояние валидации формы
+events.on('formErrors:change', (errors: Partial<IPaymentForm>) => {
+    const { payment, address } = errors;
+    paymentForm.valid = !payment && !address;
+    paymentForm.errors = Object.values({address, payment}).filter(i => !!i).join('; ');
+});
+
 // Открыть форму заказа
-events.on('contacts:open', () => {
+events.on('order:submit', () => {
     modal.render({
         content: contactForm.render({
             phone: '',
@@ -170,4 +177,5 @@ events.on('formErrors:change', (errors: Partial<IContactForm>) => {
 // Изменилось одно из полей
 events.on(/^contacts\..*:change/, (data: { field: keyof IContactForm, value: string }) => {
     appState.setContactField(data.field, data.value);
+	
 });
