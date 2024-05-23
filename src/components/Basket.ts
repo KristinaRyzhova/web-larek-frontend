@@ -78,7 +78,12 @@ export class Basket extends Component<IBasketView> {
 /* import { Component } from "./base/Component";
 import { createElement, ensureElement } from "../utils/utils";
 import { EventEmitter } from "./base/Events";
-import { IBasketView } from "../types";
+
+interface IBasketView {
+    items: HTMLElement[];
+    total: number;
+    selected: string[];
+}
 
 export class Basket extends Component<IBasketView> {
     protected _list: HTMLElement;
@@ -97,6 +102,9 @@ export class Basket extends Component<IBasketView> {
                 events.emit('order:open');
             });
         }
+
+        this.items = [];
+		this._button.disabled = true;
     }
 
     set items(items: HTMLElement[]) {
@@ -111,7 +119,6 @@ export class Basket extends Component<IBasketView> {
         }
     }
     
-
     set total(total: number) {
         this.setText(this._total, `${total} синапсов`);
     }

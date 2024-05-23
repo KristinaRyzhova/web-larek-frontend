@@ -33,8 +33,4 @@ export class PaymentForm extends Form<IOrder> {
     set address(value: string) {
         (this.container.elements.namedItem('address') as HTMLInputElement).value = value;
     }
-
-    clearAddress() {
-        this.address = ''
-    }
 }

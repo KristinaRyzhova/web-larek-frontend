@@ -19,6 +19,17 @@ export class AppState extends Model<IAppState> {
 		items.forEach((item) => (this.catalog = [...this.catalog, item]));
 		this.emitChanges('items:changed', { catalog: this.catalog });
 	}
+
+	setPreview(item: IProduct) {
+		this.preview = item.id;
+		this.emitChanges('preview:changed', item);
+	}
+	
+	setButtonText(item: IProduct) {
+		if (this.basket.some((card) => card.id === item.id)) {
+			return 'Уже в корзине';
+		} else return 'Купить';
+	}
 	
 	getBasketItems(): IProduct[] {
 		return this.basket;
@@ -87,4 +98,25 @@ export class AppState extends Model<IAppState> {
 		this.order.items = this.getBasketItems().map((item) => item.id);
 	}
 
+	isItemInBasket(item: IProduct) {
+        return this.basket.includes(item)
+    }
+
+	clearOrder() {
+		this.order = {
+			payment: '',
+			address: '',
+			email: '',
+			phone: '',
+			items: [],
+			total: 0
+		};
+		this.basket = [];
+		this.emitChanges('basket:changed');
+	}
+
+
+	getBasketItemIndex(item: IProduct): number {
+		return this.basket.indexOf(item) + 1;
+	}
 }

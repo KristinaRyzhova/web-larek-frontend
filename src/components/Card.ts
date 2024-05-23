@@ -92,7 +92,7 @@ export class Card extends Component<IProduct> {
     set button(value: string) {
         this.setText(this._button, value);
     }
-
+    
     set index(value: string) {
         this._index.textContent = value;
     }
@@ -134,12 +134,4 @@ export class BasketCard extends Component <IProduct> {
     set price(value: number) {   
         this.setText(this._price, `${value}` + ' синапсов');
     }
-
-    /* set selected(items: string[]) {
-        if (items.length) {
-            this.setDisabled(this._button, false);
-        } else {
-            this.setDisabled(this._button, true);
-        }
-    } */
 }

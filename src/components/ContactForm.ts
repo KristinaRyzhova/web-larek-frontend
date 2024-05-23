@@ -1,4 +1,4 @@
-import { IContactForm, IOrder } from "../types";
+import { IOrder } from "../types";
 import { Form } from "./Form";
 import { IEvents } from "./base/Events";
 
@@ -13,10 +13,5 @@ export class ContactsForm extends Form<IOrder> {
 
     set email(value: string) {
         (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
-    }
-
-    clearContactsFields() {
-        this.phone = '';
-        this.email = '';
     }
 }
