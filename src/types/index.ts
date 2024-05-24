@@ -21,17 +21,6 @@ export interface IPage {
     locked: boolean;
 }
 
-export interface IModal {
-    payment?: TPayment;
-    address?: string;
-    email?: string;
-    phone?: string;
-    total?: number | null;
-    open(): void;
-    close(): void;
-    render(): void;
-}
-
 export interface IBasketProduct {
     index: number;
     title: string;
@@ -60,7 +49,8 @@ export interface IOrderResult {
 }
 
 export interface ISuccess {
-    total: number;
+    total?: number;
+    onClick?: () => void;
 }
 
 export interface ISuccessActions {
@@ -75,5 +65,5 @@ export interface IAppState {
     total: string | number;
 }
 
-export type FormErrors = Partial<Record<keyof IModal, string>>;
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 export type TPayment = 'Онлайн' | 'При получении';

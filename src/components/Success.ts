@@ -1,13 +1,13 @@
 import { ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
-import { ISuccess, ISuccessActions } from '../types';
+import { ISuccess } from '../types';
 
 export class Success extends Component<ISuccess> {
     protected _close: HTMLElement;
 	protected _total: HTMLElement;
 
-	constructor(container: HTMLElement, actions: ISuccessActions, total: number) {
+	constructor(container: HTMLElement, actions: ISuccess, total: number) {
 		super(container);
 
 		this._close = ensureElement<HTMLElement>('.order-success__close', this.container);

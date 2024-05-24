@@ -1,6 +1,5 @@
 import { Model } from './base/Model';
 import { IProduct, IOrder, IAppState, FormErrors, IContactForm } from '../types';
-import { Basket } from './Basket';
 
 export class AppState extends Model<IAppState> {
 	catalog: IProduct[] = [];
@@ -12,11 +11,10 @@ export class AppState extends Model<IAppState> {
 		address: '',
 		items: [],
 		total: 0
-	}
+	};
 	index: number;
 	preview: string | null;
 	formErrors: FormErrors = {};
-	isItemAdded: boolean;
 
 	setCatalog(items: IProduct[]) {
 		items.forEach((item) => (this.catalog = [...this.catalog, item]));
@@ -27,13 +25,11 @@ export class AppState extends Model<IAppState> {
 		this.preview = item.id;
 		this.emitChanges('preview:changed', item);
 	}
-	
-	setButtonText(item: IProduct) {
-		if (this.basket.some((card) => card.id === item.id)) {
-			return 'Уже в корзине';
-		} else return 'Купить';
+
+	isInBasket(item: IProduct) {
+		return this.basket.includes(item);
 	}
-	
+
 	getBasketItems(): IProduct[] {
 		return this.basket;
 	}
@@ -100,11 +96,7 @@ export class AppState extends Model<IAppState> {
 		this.order.total = this.getTotal();
 		this.order.items = this.getBasketItems().map((item) => item.id);
 	}
-
-	/* isItemInBasket(item: IProduct) {
-        return this.basket.includes(item)
-    } */
-
+	
 	clearOrder() {
 		this.order = {
 			payment: '',

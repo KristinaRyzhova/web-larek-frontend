@@ -76,19 +76,24 @@ events.on('card:select', (item: IProduct) => {
 events.on('preview:changed', (item: IProduct) => {
 	const card = new Card(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => {
-			events.emit('product:add', item)
+			events.emit('product:add', item);
 		}
 	});
+
 	modal.render({
 		content: card.render({
 			title: item.title,
 			description: item.description,
 			image: item.image,
 			price: item.price,
-			category: item.category,
-			button: appState.setButtonText(item)
+			category: item.category
 		})
 	});
+
+	if (appState.isInBasket(item)) {
+		card.setDisabled(card._button, true);
+		card.changeButton('Уже в корзине');
+	}
 });
 
 // работаем с корзиной

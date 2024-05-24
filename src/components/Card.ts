@@ -9,7 +9,7 @@ export class Card extends Component<IProduct> {
     protected _image?: HTMLImageElement;
     protected _price: HTMLElement;
     protected _category?: HTMLElement;
-    protected _button?: HTMLButtonElement;
+    _button?: HTMLButtonElement;
     protected _index?: HTMLElement;
 
     constructor(protected container: HTMLElement, actions?: IProductActions) {
@@ -20,8 +20,8 @@ export class Card extends Component<IProduct> {
         this._image = ensureElement<HTMLImageElement>('.card__image', container);
         this._price = container.querySelector('.card__price');
         this._category = container.querySelector('.card__category');
-        this._button = container.querySelector('.card__button');
         this._index = container.querySelector('.basket__item-index');
+        this._button = container.querySelector(`.card__button`);
 
         if (actions?.onClick) {
             if (this._button) {
@@ -92,6 +92,10 @@ export class Card extends Component<IProduct> {
     set button(value: string) {
         this.setText(this._button, value);
     }
+    
+    changeButton(value: string) {
+		this.setText(this._button, value);
+	}
     
     set index(value: string) {
         this._index.textContent = value;
