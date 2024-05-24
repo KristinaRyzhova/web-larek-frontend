@@ -1,5 +1,6 @@
 import { Model } from './base/Model';
 import { IProduct, IOrder, IAppState, FormErrors, IContactForm } from '../types';
+import { Basket } from './Basket';
 
 export class AppState extends Model<IAppState> {
 	catalog: IProduct[] = [];
@@ -12,8 +13,10 @@ export class AppState extends Model<IAppState> {
 		items: [],
 		total: 0
 	}
+	index: number;
 	preview: string | null;
 	formErrors: FormErrors = {};
+	isItemAdded: boolean;
 
 	setCatalog(items: IProduct[]) {
 		items.forEach((item) => (this.catalog = [...this.catalog, item]));
@@ -46,7 +49,7 @@ export class AppState extends Model<IAppState> {
 		this.basket = this.basket.filter((it) => it != item);
 		this.emitChanges('basket:remove');
 	}
-
+   
 	getTotal(): number {
 		return this.basket.reduce((total, item) => total + item.price, 0);
 	}
@@ -98,9 +101,9 @@ export class AppState extends Model<IAppState> {
 		this.order.items = this.getBasketItems().map((item) => item.id);
 	}
 
-	isItemInBasket(item: IProduct) {
+	/* isItemInBasket(item: IProduct) {
         return this.basket.includes(item)
-    }
+    } */
 
 	clearOrder() {
 		this.order = {
@@ -113,10 +116,5 @@ export class AppState extends Model<IAppState> {
 		};
 		this.basket = [];
 		this.emitChanges('basket:changed');
-	}
-
-
-	getBasketItemIndex(item: IProduct): number {
-		return this.basket.indexOf(item) + 1;
 	}
 }
