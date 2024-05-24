@@ -91,7 +91,7 @@ events.on('preview:changed', (item: IProduct) => {
 	});
 
 	if (appState.isInBasket(item)) {
-		card.setDisabled(card._button, true);
+		card.disablePreviewCard();
 		card.changeButton('Уже в корзине');
 	}
 });

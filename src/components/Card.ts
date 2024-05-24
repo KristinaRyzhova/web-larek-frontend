@@ -94,8 +94,12 @@ export class Card extends Component<IProduct> {
     }
     
     changeButton(value: string) {
-		this.setText(this._button, value);
-	}
+        this.setText(this._button, value);
+    }
+    
+    disablePreviewCard() {
+        this.setDisabled(this._button, true);
+    }
     
     set index(value: string) {
         this._index.textContent = value;
