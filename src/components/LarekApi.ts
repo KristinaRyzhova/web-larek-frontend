@@ -1,10 +1,5 @@
 import { Api, ApiListResponse } from './base/Api';
-import { IOrder, IOrderResult, IProduct } from '../types';
-
-export interface ILarekApi {
-	getProductItems: () => Promise<IProduct[]>;
-	getProductItem: (id: string) => Promise<IProduct>;
-}
+import { ILarekApi, IOrder, IOrderResult, IProduct } from '../types';
 
 export class LarekApi extends Api implements ILarekApi {
 	readonly cdn: string;

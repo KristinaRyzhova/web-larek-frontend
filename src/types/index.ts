@@ -1,3 +1,8 @@
+export interface ILarekApi {
+    getProductItems: () => Promise<IProduct[]>;
+    getProductItem: (id: string) => Promise<IProduct>;
+}
+
 export interface IProductActions {
     onClick: (event: MouseEvent) => void;
 }
@@ -29,8 +34,8 @@ export interface IBasketProduct {
 }
 
 export interface IPaymentForm {
-    address: string;
-    payment: string;
+    payment?: string;
+    address?: string;
 }
 
 export interface IContactForm {
@@ -51,10 +56,6 @@ export interface IOrderResult {
 export interface ISuccess {
     total?: number;
     onClick?: () => void;
-}
-
-export interface ISuccessActions {
-    onClick: () => void;
 }
 
 export interface IAppState {

@@ -98,6 +98,7 @@ ____
 
 - getProductItem - получает информацию по конкретному продукту по его id;
 - getProductItems - получает данные всех продуктов;
+- orderProduct(order: IOrder) - отправляет данные заказа.
 
 ### Класс EventEmitter
 
@@ -105,7 +106,7 @@ ____
 
 В конструктор класса EventEmitter передается:
 
-- _events - коллекция с именами событий и функцииями подписчиками на события.
+- _events - коллекция с именами событий и функциями подписчиками на события.
 
 Методы класса EventEmitter:
 
@@ -131,7 +132,7 @@ ____
 - setDisabled - меняет статус блокировки элемента;
 - protected setHidden - защищенный метод, скрывает переданный элемент;
 - protected setVisible - защищенный метод, отображает переданный элемент;
-- protected setImage - защищенный метод, устанавливает изображение и альтернативный текст для изоображения;
+- protected setImage - защищенный метод, устанавливает изображение и альтернативный текст для изображения;
 - render - рендерит и возвращает корневой DOM-элемент.
 
 ### Класс Model
@@ -143,7 +144,7 @@ ____
 В конструктор класса приходят:
 
 - data: ```Partial<T>``` - данные, принимают любое количество свойств типа T;
-- protected events: IEvents - защищеный объект с типом IEvents.
+- protected events: IEvents - защищенный объект с типом IEvents.
 
 Методы класса:
 
@@ -160,21 +161,29 @@ ____
 
 Поля класса:
 
-- basket - массив товаров в корзине.
 - catalog - каталог товаров.
+- basket - массив товаров в корзине.
 - order - данные о заказе.
+- preview - предварительный просмотр карточки товара.
 - formErrors - ошибки в инпутах форм.
 
 Методы класса:
 
-- toggleOrderedItem - метод для проверки статуса товара находится он в корзине или нет;
 - setCatalog - метод для загрузки списка всех товаров с сервера;
-- clearBasket - метод для очистки корзины;
 - setPreview - метод для предпросмотра товара;
+- isInBasket - метод для проверки статуса товара находится он в корзине или нет;
+- getBasketItems - метод представляющий корзину с выбранными товарами.
+- addToBasket - метод добавляющий товар в корзину;
+- removeFromBasket - метод удаляющий товар из корзины;
 - getTotal - метод для подсчета полной стоимости заказа;
-- addItemBasket - метод обавляющий товар в корзину;
-- removeItemBasket - метод удаляющий товар из корзины;
-- validateOrder - метод проверки правильности введенных данных.
+- setPaymentMethod - метод выбора способов оплаты.
+- setPaymentAddress - метод устанавливающий значение в поле адреса.
+- setContactField - метод установки значений полей с данными покупателя.
+- validatePaymentForm - метод проверки правильности введенных данных в форме с оплатой и адресом.
+- validateContactForm - метод проверки правильности введенных данных покупателя.
+- setOrder - метод установки данных заказа с выбранными товарами и общей суммой покупки.
+- clearOrder - метод для очистки данных заказа.
+- clearBasket - метод для очистки корзины.
 
 ____
 
@@ -198,38 +207,60 @@ ____
 Методы класса:
 
 - set counter - устанавливает счетчик товаров в корзине;
-- set catalog - загружает каталог воваров на главную страницу;
+- set catalog - загружает каталог товаров на главную страницу;
 - set locked - устанавливает блокировку от прокрутки при активном модальном окне.
 
 ### Класс Card
 
 Класс Card служит для отрисовки карточки товара на странице.
-Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс ICard.
+Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс IProduct.
 
 Поля класса:
 
-- _id - идентификтор товара;
 - _title - наименование товара;
 - _description - описание товара;
 - _image - изображение товара;
+- _price - стоимость товара;
 - _category - категория товара;
 - _button - устанавливает текс кнопки, в зависимости в корзине товар или нет;
-- _price - стоимость товара;
-- _index - номер товара в корзине.
+- _basketIndex - номер товара в корзине.
 
 Конструктор класса:
-    constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) - принимает наименование блока, контейнер с элементом блока и действия с элементом (опционально).
+    constructor(container: HTMLElement, actions?: IProductActions) - контейнер с элементом блока и действия с элементом (опционально).
 
 Методы класса Card:
 
-- get id/set id - получить/установить идентификатор карточки товара;
-- get title/set title - получить/установить наименование товара;
-- get description/set description - получить/установить описание товара;
-- get image/set image - получить/установить изображение товара;
-- get category/set category - получить/установить категорию товара;
-- get price/set price - получить/установить стоимость товара;
-- get button/set button - получить/установить текст кнопки;
-- get index/set index - номер товара в корзине;
+- set id - установить идентификатор карточки товара;
+- set title - установить наименование товара;
+- set description - установить описание товара;
+- set image - установить изображение товара;
+- set price - установить стоимость товара;
+- set category - установить категорию товара;
+- set button - установить текст кнопки;
+- changeButton - метод изменяющий текст кнопки;
+- disablePreviewCard - метод делающий кнопку не активной;
+- set index - метод установки номера товара в корзине;
+
+### Класс BasketCard
+
+Класс BasketCard служит для отрисовки карточки товара на странице.
+Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс IProduct.
+
+Поля класса:
+
+- _basketIndex - номер товара в корзине.
+- _title - наименование товара;
+- _button - устанавливает кнопку удаления товара из корзины;
+- _price - стоимость товара;
+
+Конструктор класса:
+    constructor(container: HTMLElement, actions?: IProductActions) - принимает контейнер с элементом блока и действия с элементом (опционально).
+
+Методы класса BasketCard:
+
+- set index - установить индекс карточки товара в корзине;
+- set title - установить наименование товара;
+- set price - установить стоимость товара;
 
 ### Класс Modal
 
@@ -249,13 +280,12 @@ ____
 - set content - устанавливает контент модального окна;
 - open - открытие модального окна;
 - close - закрытие модального окна по нажатию кнопки закрытия;
-- handleEscClose - закрывает модальное окно по нажатию клавиши Esc.
 - render - рендерит элемент модального окна;
 
 ### Класс Basket
 
 Класс Basket отрисовывает элементы в корзине.
-Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс IBasket.
+Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс IBasketView.
 
 Поля класса:
 
@@ -269,12 +299,12 @@ ____
 Методы класса Basket:
 
 - set items - устанавливает массив товаров в корзине или отрисовывает сообщение, что корзина пуста;
-- set selected - в зависимости от наличия товаров в корзине, делает кнопку оформления заказа активной или нет;
 - set total - устанавливает общую стоимость товаров в корзине.
+- removeAllItemsFromBasket - метод для очистки содержимого корзины меняющий выбранные товары на строку "Корзина пуста" и делающий кнопку неактивной.
 
 ### Класс Form
 
-Класс Form служит для создания и управления элементами формамы.
+Класс Form служит для создания и управления элементами формы.
 Класс является дженериком, расширяет класс Component и принимает в переменной интерфейс IFormState.
 
 Поля класса:
@@ -294,14 +324,18 @@ ____
 
 ### Класс PaymentForm
 
-Класс PaymentForm отрисовывает окно с формой содержащей способ оплаты и адрес пользователя, является дженериком, расширяет класс Form и принимает в переменной интерфейс IOrder.
+Класс PaymentForm отрисовывает окно с формой, содержащей способ оплаты и адрес пользователя, является дженериком, расширяет класс Form и принимает в переменной интерфейс IOrder.
+
+Поля класса:
+
+- protected _buttons - защищенное поле, кнопка выбора варианта оплаты;
 
 Конструктор класса:
     constructor(container: HTMLFormElement, events: IEvents) - принимает элемент контейнера и объект событий.
 
 Методы класса PaymentForm:
 
-- set payment - установка варианта оплаты;
+- set setButtonClass - установка варианта оплаты;
 - set address - устанавливает электронную почту пользователя.
 
 ### Класс ContactForm
@@ -323,13 +357,10 @@ ____
 Поля класса:
 
 - protected _close - защищенное поле, элемент закрывающий модальное окно;
+- protected _total - защищенное поле, общая сумма заказа;
 
 Конструктор класса:
     constructor(container: HTMLElement, actions: ISuccessActions) - принимает элемент контейнера и объект событий.
-
-Методы конструктора класса SuccessForm:
-
-- _close - при клике на кнопку идет закрытие окна.
 
 ____
 
@@ -337,7 +368,24 @@ ____
 
 ____
 
-**Интерфейс IProduct** - интерфейс содержащий данные карточки товара:
+**Интерфейс ILarekApi** - интерфейс определяет два метода – getProductItems и getProductItem, которые должны взаимодействовать с API.
+
+```text
+export interface ILarekApi {
+    getProductItems: () => Promise<IProduct[]>;
+    getProductItem: (id: string) => Promise<IProduct>;
+}
+```
+
+**Интерфейс IProductActions** - интерфейс используется для обработки события нажатия на элемент продукта.
+
+```text
+export interface IProductActions {
+    onClick: (event: MouseEvent) => void;
+}
+```
+
+**Интерфейс IProduct** - интерфейс содержащий данные карточки товара.
 
 ```text
 export interface IProduct {
@@ -348,7 +396,7 @@ export interface IProduct {
     price: number | null;
     category?: string;
     button: string;
-    index?: string;
+    index?: number;
 }
 ```
 
@@ -358,29 +406,13 @@ export interface IProduct {
 export interface IPage {
     wrapper: HTMLElement;
     counter: number;
-    catalog: HTMLElement[];    
+    catalog: HTMLElement[];
     basket: HTMLElement;
     locked: boolean;
 }
 ```
 
-**Интерфейс IModal** - интерфейс содержащий данные и методы модальных окон:
-
-```text
-export interface IModal {
-    payment?: TPayment;
-    address?: string;
-    email?: string;
-    phone?: string;
-    items?: IProduct[] | null;
-    total?: number | null;
-    open(): void;
-    close(): void;
-    render(): void;
-}
-```
-
-**Интерфейс IBasket** - интерфейс описывающий данные корзины:
+**Интерфейс IBasket** - интерфейс описывающий данные корзины.
 
 ```text
 export interface IBasket {
@@ -392,45 +424,82 @@ export interface IBasket {
 }
 ```
 
-**Интерфейс IOrder** - интерфейс содержащий данные и методы модального окна с данными пользователя для заказа товаров:
+**Интерфейс IBasketProduct** - интерфейс определяет набор свойств, связанных с продуктами в корзине.
 
 ```text
-export interface IOrder  {
-    payment: IPayment; 
-    address: string;
+export interface IBasketProduct {
+    index: number;
+    title: string;
+    price: number;
+    button: string;
+}
+```
+
+**Интерфейс IPaymentForm** - интерфейс определяет набор свойств, связанных с формой выбора способа оплаты и адреса доставки.
+
+```text
+export interface IPaymentForm {
+    payment?: string;
+    address?: string;
+}
+```
+
+**Интерфейс IContactForm** - интерфейс определяет набор свойств, связанных с формой данных покупателя.
+
+```text
+export interface IContactForm {
     email: string;
     phone: string;
 }
 ```
 
-**Интерфейс ISuccess** - интерфейс содержащий данные и методы модального окна при успешном оформлении заказа:
+**Интерфейс IOrder** - интерфейс содержащий данные и методы модального окна с данными пользователя для заказа товаров.
 
 ```text
-export interface ISuccess {
+export interface IOrder extends IPaymentForm, IContactForm {
+    items: string[];
     total: number;
-    onClick: () => void;
 }
 ```
 
-**Интерфейс IAppState** - интерфейс содержащий данные и методы для управления состоянием проекта:
+**Интерфейс IOrderResult** - интерфейс определяет набор свойств, связанных с результатом заказа.
+
+```text
+export interface IOrderResult {
+    id: string;
+    total: number;
+}
+```
+
+**Интерфейс ISuccess** - интерфейс содержащий данные и методы модального окна при успешном оформлении заказа.
+
+```text
+export interface ISuccess {
+    total?: number;
+    onClick?: () => void;
+}
+```
+
+**Интерфейс IAppState** - интерфейс содержащий данные и методы для управления состоянием проекта.
 
 ```text
 export interface IAppState {
-    catalog: ICard[];
-    basket: string[];
-    preview: string | null;
-    order: IOrder | null;
+    list: IProduct[];
+    basket?: IProduct[];
+    preview?: string | null;
+    order?: IOrder | null;
+    total: string | number;
 }
 ```
 
 **Тип проверки валидности инпутов форм модальных окон - FormErrors:**
 
 ```text
-export type FormErrors = Partial<Record<keyof IModal, string>>;
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 ```
 
 **Тип способа оплаты:**
 
 ```text
-export type IPayment = 'Онлайн' | 'При получении';
+export type TPayment = 'Онлайн' | 'При получении';
 ```

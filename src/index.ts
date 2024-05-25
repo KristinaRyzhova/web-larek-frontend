@@ -4,7 +4,7 @@ import { LarekApi } from './components/LarekApi';
 import { API_URL, CDN_URL } from './utils/constants';
 import { EventEmitter } from './components/base/Events';
 import { Page } from './components/Page';
-import { AppState } from './components/AppData';
+import { AppState } from './components/AppState';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Card, BasketCard } from './components/Card';
 import { PaymentForm } from './components/PaymentForm';
@@ -215,6 +215,7 @@ events.on('contacts:submit', () => {
 			});
 			paymentForm.setButtonClass('');
 			appState.clearOrder();
+			appState.clearBasket();
 			page.counter = appState.getBasketItems().length;
 		})
 		.catch((err) => {

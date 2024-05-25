@@ -9,18 +9,17 @@ export class Card extends Component<IProduct> {
     protected _image?: HTMLImageElement;
     protected _price: HTMLElement;
     protected _category?: HTMLElement;
-    _button?: HTMLButtonElement;
-    protected _index?: HTMLElement;
+    protected _button?: HTMLButtonElement;
+    protected _basketIndex?: HTMLElement;
 
     constructor(protected container: HTMLElement, actions?: IProductActions) {
         super(container);
-
         this._title = ensureElement<HTMLElement>('.card__title', container);
         this._description = container.querySelector('.card__description');
         this._image = ensureElement<HTMLImageElement>('.card__image', container);
         this._price = container.querySelector('.card__price');
         this._category = container.querySelector('.card__category');
-        this._index = container.querySelector('.basket__item-index');
+        this._basketIndex = container.querySelector('.basket__item-index');
         this._button = container.querySelector(`.card__button`);
 
         if (actions?.onClick) {
@@ -36,24 +35,12 @@ export class Card extends Component<IProduct> {
         this.container.dataset.id = value;
     }
 
-    get id(): string {
-        return this.container.dataset.id || '';
-    }
-
     set title(value: string) {
         this.setText(this._title, value);
     }
 
-    get title(): string {
-        return this._title.textContent || '';
-    }
-
     set description(value: string) {
 		this.setText(this._description, value);
-	}
-
-	get description() {
-		return this._description.textContent || '';
 	}
     
     set image(value: string) {
@@ -65,10 +52,6 @@ export class Card extends Component<IProduct> {
         this.setText(this._price, value ? `${value} синапсов` : 'Бесценно');
     }
     
-    get price(): string {
-        return this._price.textContent || '';
-    }
-
     set category(value: string) {
 		this.setText(this._category, value);
 
@@ -84,10 +67,6 @@ export class Card extends Component<IProduct> {
             this._category.classList.add('card__category_additional')
         }
     }
-    
-	get category() {
-		return this._category.textContent || '';
-	}
 
     set button(value: string) {
         this.setText(this._button, value);
@@ -102,23 +81,19 @@ export class Card extends Component<IProduct> {
     }
     
     set index(value: string) {
-        this._index.textContent = value;
-    }
-    
-    get index(): string {
-        return this._index.textContent || '';
+        this._basketIndex.textContent = value;
     }
 }
 
 export class BasketCard extends Component <IProduct> {
-    protected _index: HTMLElement;
+    protected _basketIndex: HTMLElement;
     protected _title: HTMLElement;
     protected _button: HTMLButtonElement;
     protected _price: HTMLElement;
     
     constructor (container: HTMLElement, actions?: IProductActions){
         super(container);
-        this._index = this.container.querySelector('.basket__item-index');
+        this._basketIndex = this.container.querySelector('.basket__item-index');
         this._title = this.container.querySelector('.card__title');
         this._button = this.container.querySelector('.basket__item-delete');
         this._price = this.container.querySelector('.card__price');
@@ -132,7 +107,7 @@ export class BasketCard extends Component <IProduct> {
     }
 
     set index(value: number) {
-		this.setText(this._index, `${value}`);
+		this.setText(this._basketIndex, `${value}`);
 	}
 
     set title(value: string) {

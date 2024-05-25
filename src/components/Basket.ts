@@ -46,7 +46,7 @@ export class Basket extends Component<IBasketView> {
         this.setText(this._total, `${total} синапсов`);
     }
 
-    removeAllItemsFromBasket() {
+    removeAllItemsFromBasket(): void {
         this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
             textContent: 'Корзина пуста'
         }));

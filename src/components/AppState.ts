@@ -12,21 +12,20 @@ export class AppState extends Model<IAppState> {
 		items: [],
 		total: 0
 	};
-	index: number;
 	preview: string | null;
 	formErrors: FormErrors = {};
 
-	setCatalog(items: IProduct[]) {
+	setCatalog(items: IProduct[]): void {
 		items.forEach((item) => (this.catalog = [...this.catalog, item]));
 		this.emitChanges('items:changed', { catalog: this.catalog });
 	}
 
-	setPreview(item: IProduct) {
+	setPreview(item: IProduct): void {
 		this.preview = item.id;
 		this.emitChanges('preview:changed', item);
 	}
 
-	isInBasket(item: IProduct) {
+	isInBasket(item: IProduct): boolean {
 		return this.basket.includes(item);
 	}
 
@@ -34,18 +33,18 @@ export class AppState extends Model<IAppState> {
 		return this.basket;
 	}
 
-	addToBasket(item: IProduct) {
+	addToBasket(item: IProduct): void {
 		if (this.basket.indexOf(item) <= 0) {
 			this.basket.push(item);
 			this.emitChanges('basket:changed', item);
 		}
 	}
 
-	removeFromBasket(item: IProduct) {
+	removeFromBasket(item: IProduct): void {
 		this.basket = this.basket.filter((it) => it != item);
 		this.emitChanges('basket:remove');
 	}
-   
+
 	getTotal(): number {
 		return this.basket.reduce((total, item) => total + item.price, 0);
 	}
@@ -60,7 +59,7 @@ export class AppState extends Model<IAppState> {
 		this.validatePaymentForm();
 	}
 
-	validatePaymentForm() {
+	validatePaymentForm(): boolean {
 		const errors: typeof this.formErrors = {};
 		if (!this.order.address) {
 			errors.address = 'Необходимо указать адрес';
@@ -73,13 +72,13 @@ export class AppState extends Model<IAppState> {
 		return Object.keys(errors).length === 0;
 	}
 
-    setContactField(field: keyof IContactForm, value: string) {
+    setContactField(field: keyof IContactForm, value: string): void {
 		this.order[field] = value;
         if (this.validateContactForm()) {
             this.events.emit('contacts:ready', this.order);
         }
     }
-	validateContactForm() {
+	validateContactForm(): boolean {
         const errors: typeof this.formErrors = {};		
         if (!this.order.email) {
             errors.email = 'Необходимо указать email';
@@ -92,12 +91,12 @@ export class AppState extends Model<IAppState> {
         return Object.keys(errors).length === 0;
     }
 
-	setOrder():void {
+	setOrder(): void {
 		this.order.total = this.getTotal();
 		this.order.items = this.getBasketItems().map((item) => item.id);
 	}
-	
-	clearOrder() {
+
+	clearOrder(): void {
 		this.order = {
 			payment: '',
 			address: '',
@@ -106,6 +105,9 @@ export class AppState extends Model<IAppState> {
 			items: [],
 			total: 0
 		};
+	}
+	
+	clearBasket(): void {
 		this.basket = [];
 		this.emitChanges('basket:changed');
 	}
