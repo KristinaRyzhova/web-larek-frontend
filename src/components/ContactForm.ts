@@ -3,15 +3,21 @@ import { Form } from "./Form";
 import { IEvents } from "./base/Events";
 
 export class ContactsForm extends Form<IOrder> {
+
+    protected _email: HTMLInputElement;
+    protected _phone: HTMLInputElement;
+
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
+        this._email = container.querySelector('input[name="email"]') as HTMLInputElement;
+        this._phone = container.querySelector('input[name="email"]') as HTMLInputElement;
     }
 
     set phone(value: string) {
-        (this.container.elements.namedItem('phone') as HTMLInputElement).value = value;
+        this._email.value = value;
     }
 
     set email(value: string) {
-        (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
+        this._email.value = value;
     }
 }

@@ -54,9 +54,7 @@ events.on('modal:close', () => {
 api
 	.getProductItems()
 	.then(appState.setCatalog.bind(appState))
-	.catch((err) => {
-		console.log(err);
-	});
+	.catch(console.error)
 
 events.on('items:changed', () => {
 	page.catalog = appState.catalog.map((item) => {
@@ -218,7 +216,5 @@ events.on('contacts:submit', () => {
 			appState.clearBasket();
 			page.counter = appState.getBasketItems().length;
 		})
-		.catch((err) => {
-			console.error(err);
-		});
+		.catch(console.error)
 });

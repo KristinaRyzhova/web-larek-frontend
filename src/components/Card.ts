@@ -12,6 +12,14 @@ export class Card extends Component<IProduct> {
     protected _button?: HTMLButtonElement;
     protected _basketIndex?: HTMLElement;
 
+    protected _categoryColor = <Record<string, string>> {
+        "софт-скил": "soft",
+        "другое": "other",
+        "дополнительное": "additional",
+        "кнопка": "button",
+        "хард-скил": "hard"
+    }
+
     constructor(protected container: HTMLElement, actions?: IProductActions) {
         super(container);
         this._title = ensureElement<HTMLElement>('.card__title', container);
@@ -51,21 +59,10 @@ export class Card extends Component<IProduct> {
         this.setDisabled(this._button, !value);
         this.setText(this._price, value ? `${value} синапсов` : 'Бесценно');
     }
-    
-    set category(value: string) {
-		this.setText(this._category, value);
 
-        if (value == 'софт-скил') {
-            this._category.classList.add('card__category_soft')
-        } else if (value == 'хард-скил') {
-            this._category.classList.add('card__category_hard')
-        } else if (value == 'кнопка') {
-            this._category.classList.add('card__category_button')
-        } else if (value == 'другое') {
-            this._category.classList.add('card__category_other')
-        } else {
-            this._category.classList.add('card__category_additional')
-        }
+    set category(value: string) {
+        this.setText(this._category, value);
+        this.toggleClass(this._category, `card__category_${this._categoryColor[value]}`, true)
     }
 
     set button(value: string) {
@@ -81,7 +78,7 @@ export class Card extends Component<IProduct> {
     }
     
     set index(value: string) {
-        this._basketIndex.textContent = value;
+        this.setText(this._basketIndex, value)
     }
 }
 
