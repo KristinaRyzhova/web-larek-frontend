@@ -21,7 +21,7 @@ export class Basket extends Component<IBasketView> {
         this._button = this.container.querySelector('.basket__button');
 
         this.items = [];
-        this.setDisabled(this._button, true);
+        this.toggleButton(true);
 
         if (this._button) {
             this._button.addEventListener('click', () => {

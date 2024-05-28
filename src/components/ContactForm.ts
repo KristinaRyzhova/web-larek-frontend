@@ -9,15 +9,15 @@ export class ContactsForm extends Form<IOrder> {
 
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
-        this._email = container.querySelector('input[name="email"]') as HTMLInputElement;
-        this._phone = container.querySelector('input[name="email"]') as HTMLInputElement;
-    }
-
-    set phone(value: string) {
-        this._email.value = value;
+        this._email = this.container.elements.namedItem('email') as HTMLInputElement;
+        this._phone = this.container.elements.namedItem('phone') as HTMLInputElement
     }
 
     set email(value: string) {
         this._email.value = value;
+    }
+
+    set phone(value: string) {
+        this._phone.value = value;
     }
 }

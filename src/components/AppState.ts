@@ -91,9 +91,6 @@ export class AppState extends Model<IAppState> {
         this.formErrors = errors;
         this.events.emit('formErrors:change', this.formErrors);
         return Object.keys(errors).length === 0;
-
-
-		
     }
 
 	setOrder(): void {

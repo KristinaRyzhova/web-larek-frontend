@@ -10,7 +10,7 @@ export class PaymentForm extends Form<IOrder> {
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
         super(container, events);
         this._buttons = Array.from (container.querySelectorAll('.button_alt'));
-        this._address = container.querySelector('input[name="address"]') as HTMLInputElement;
+        this._address = this.container.elements.namedItem('address') as HTMLInputElement
 
         this._buttons.forEach((element) =>
             element.addEventListener('click', (event: MouseEvent) => {
@@ -22,14 +22,10 @@ export class PaymentForm extends Form<IOrder> {
         );
     }
   
-    setButtonClass(name: string): void { 
-        this._buttons.forEach((button) => { 
-          if (button.name === name) {
-            button.classList.add('button_alt-active')
-        } else {
-            button.classList.remove('button_alt-active');
-          }
-      });
+    setButtonClass(name: string): void {
+        this._buttons.forEach((button) => {
+            this.toggleClass(button, 'button_alt-active', button.name === name);
+        });
     }
   
     set address(value: string) {
